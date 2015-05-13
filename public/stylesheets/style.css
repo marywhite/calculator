@@ -10,7 +10,7 @@ a {
 .screen {
   width: 100%;
   border: 1px solid black;
-  height: 6em;
+  height: 4em;
 }
 
 .key {
@@ -20,5 +20,9 @@ a {
 }
 
 .col-md-1 {
+  padding: .5em;
+}
+
+.col-md-4 {
   padding: .5em;
 }
