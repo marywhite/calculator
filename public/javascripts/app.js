@@ -52,29 +52,44 @@ $(document).ready(function(){
 
     //change this to switchcase
     $('.num').click(function(){
-        numID = $(this).attr('id');
-        if ((numID == 0) && (lastClick == 'start')) {
-            console.log('hi');
-        } else {
-            if (lastClick == 'equals') {
+      numID = $(this).attr('id');
+        numID = numID == 'dot' ? '.' : numID;
+        switch (lastClick){
+            case "equals":
                 reset();
-            }
-            if (numID == 'dot') {
-                numID = '.';
-                if (!decimal) {
-                    current += numID;
-                    decimal = true;
-                }
-            } else {
+            case "start":
+               if (numID == 0){ break;}
+            case "decimal":
+                if (numID == '.'){ break;}
+            default:
                 current += numID;
-                decimal = false;
+                $('.numDisplay').text(current);
+                lastClick = numID == '.' ? 'decimal' : 'number';
+       }
+    });
+
+
+    function postData() {
+    var dataObject = {};
+        $.ajax({
+            url: '/assignments/' + id,
+            type: 'POST',
+            data: JSON.stringify(dataObject),
+            contentType: 'application/json',
+            success: function (result) {
+                console.log(result);
             }
+        });
+    }
 
-            $('.numDisplay').text(current);
-            lastClick = "number";
-        }
-    })
-
-
+    function getData() {
+        $.ajax({
+            url: '/operations',
+            dataType: "json",
+            success: function (res) {
+                //display res
+            }
+        });
+    }
 
 });
