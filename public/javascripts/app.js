@@ -1,11 +1,19 @@
 var total
     , current = ''
-    , operator;
+    , operator
+    , numID
+    , decimal = 'false'
+    , lastClick = 'start';
+
+
+//handle zeros
+//display zeros
 
 $(document).ready(function(){
 
+    reset();
+
     $('.equals').click(function(){
-        current = parseInt(current);
         switch (operator) {
             case "divide":
                 total /= current;
@@ -20,18 +28,53 @@ $(document).ready(function(){
                 total += current;
         }
         $('.numDisplay').text(total);
+        current = total;
+        lastClick = 'equals';
     });
 
     $('.operator').click(function(){
-        total = parseInt(current);
-        current = '';
         operator = $(this).attr('id');
-        console.log(total, current);
+        if (lastClick != 'operator' && lastClick != 'start') {
+            total = parseFloat(current);
+            current = '';
+            operator = $(this).attr('id');
+            lastClick = "operator";
+        }
     });
 
+    $('.clear').click(reset);
+
+    function reset(){
+        total = 0;
+        current = '';
+        $('.numDisplay').text(0);
+    }
+
+    //change this to switchcase
     $('.num').click(function(){
-        current += $(this).attr('id');
-        $('.numDisplay').text(current);
+        numID = $(this).attr('id');
+        if ((numID == 0) && (lastClick == 'start')) {
+            console.log('hi');
+        } else {
+            if (lastClick == 'equals') {
+                reset();
+            }
+            if (numID == 'dot') {
+                numID = '.';
+                if (!decimal) {
+                    current += numID;
+                    decimal = true;
+                }
+            } else {
+                current += numID;
+                decimal = false;
+            }
+
+            $('.numDisplay').text(current);
+            lastClick = "number";
+        }
     })
+
+
 
 });

@@ -7,7 +7,7 @@ a {
   color: #00B7FF;
 }
 
-.screen {
+.screen, .clear {
   width: 100%;
   border: 1px solid black;
   height: 4em;
