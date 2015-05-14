@@ -6,9 +6,6 @@ var total
     , lastClick = 'start';
 
 
-//handle zeros
-//display zeros
-
 $(document).ready(function(){
 
     reset();
@@ -27,6 +24,7 @@ $(document).ready(function(){
             case "add":
                 total += current;
         }
+        postData();
         $('.numDisplay').text(total);
         current = total;
         lastClick = 'equals';
@@ -42,6 +40,8 @@ $(document).ready(function(){
         }
     });
 
+    $('.getHistory').click(getData);
+
     $('.clear').click(reset);
 
     function reset(){
@@ -50,7 +50,7 @@ $(document).ready(function(){
         $('.numDisplay').text(0);
     }
 
-    //change this to switchcase
+
     $('.num').click(function(){
       numID = $(this).attr('id');
         numID = numID == 'dot' ? '.' : numID;
@@ -60,7 +60,7 @@ $(document).ready(function(){
             case "start":
                if (numID == 0){ break;}
             case "decimal":
-                if (numID == '.'){ break;}
+                if (numID == '.' && lastClick == "decimal"){ break;}
             default:
                 current += numID;
                 $('.numDisplay').text(current);
@@ -69,10 +69,11 @@ $(document).ready(function(){
     });
 
 
+
     function postData() {
-    var dataObject = {};
+    var dataObject = { 'operation': operator, 'total': total};
         $.ajax({
-            url: '/assignments/' + id,
+            url: '/operations',
             type: 'POST',
             data: JSON.stringify(dataObject),
             contentType: 'application/json',
@@ -82,12 +83,14 @@ $(document).ready(function(){
         });
     }
 
+    // eventually could append this to DOM
     function getData() {
         $.ajax({
             url: '/operations',
             dataType: "json",
             success: function (res) {
-                //display res
+                //$('.history').append(res);
+                console.log(res);
             }
         });
     }

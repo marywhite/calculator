@@ -1,9 +1,8 @@
 var mongoose = require('mongoose');
 
 var Operation = new mongoose.Schema({
-    number: Number,
-    completed: Boolean,
-    note: String
+    operation: String,
+    total: Number
 });
 
 module.exports = mongoose.model('Operation', Operation);
